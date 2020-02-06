@@ -11,6 +11,7 @@ import random
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import sys
+import math
 
 
 class Ising_Lattice(object):
@@ -43,9 +44,10 @@ class Ising_Lattice(object):
             self.lattice = np.ones(self.size, dtype=int)
 
         if self.spin == "half":
-            up = np.ones((self.size,self.size/2), dtype=int)
-            down = -np.ones((self.size,self.size/2), dtype=int)
-            self.lattice = np.append(up, down, axis=0)
+            up = np.ones((50,25), dtype=int)
+            down = -np.ones((50,25), dtype=int)
+            self.lattice = np.append(up, down, axis=1)
+            print(self.lattice.shape)
 
     def pbc(self, indices):
         """
@@ -139,7 +141,7 @@ class Ising_Lattice(object):
             for j in range(len(energy)):
                 data_point.append(energy[np.random.choice(energy)])
             errors.append(self.heat_cap(data_point))
-            return (sqrt(squared_average(errors)-average(errors)**2))
+            return (math.sqrt(self.squared_average(errors)-self.average(errors)**2))
 
     def susceptibility(self, mag_list):        
         susceptibility = (1/((self.size[0]*self.size[1])*self.temp)*((self.squared_average(mag_list)-(self.average(mag_list)**2))))
@@ -152,7 +154,7 @@ class Ising_Lattice(object):
             for j in range(len(mag)):
                 data_point.append(mag[np.random.choice(len(energy))])
             errors.append(self.susceptibility(data_point))
-            return (sqrt(squared_average(errors)-average(errors)**2))
+            return (math.sqrt(self.squared_average(errors)-self.average(errors)**2))
 
     def run(self, iterations, it_per_frame):
         """

@@ -45,17 +45,12 @@ def main():
         energy = [] #opening a list for energy
         magnetisation = [] #opening a list for magnetisation
         heat_c = [] #opening a list for heat capacity 
-        suseptibility = [] #opening a list for suseptibility
+        susceptibility = [] #opening a list for susceptibility
         temp_list = []
         heat_c_error = []
         sus_error = []
 
         temp_range = np.arange(min_temp, max_temp, 0.1) #creating an array of temperatures between min and max temperature with 30 evenly spaced points     
-        print(size)
-        print(size)
-        print(min_temp)
-        print(max_temp)
-        print(dynamics)
 
         if dynamics == "Glauber":
             file_handle = open("Glauber.dat", "w+")
@@ -66,39 +61,44 @@ def main():
            
             lattice = Ising_Lattice(temp = temp_range[t], size = size, dynamics = dynamics, spin = spin)
             E_single_temp = []
-            M_single_temp = []            
+            M_single_temp = []   
+            print(temp_range[t])         
 
             if lattice.dynamics == "Glauber":
                 for i in range(sweeps):                                    
                     for j in range(size[0]*size[1]):
                         lattice.Glauber()
-                        if i % collect == 0 and i >= equil_s:                           
-                            E_single_temp.append(lattice.energy_total())
-                            M_single_temp.append(lattice.magnetisation())
+                    if i % collect == 0 and i >= equil_s:                           
+                        E_single_temp.append(lattice.energy_total())
+                        M_single_temp.append(lattice.magnetisation())
 
-            energy.append(lattice.average(E_single_temp))
-            magnetisation.append(lattice.average(M_single_temp))
-            heat_c.append(lattice.heat_cap(E_single_temp))
-            heat_c_error.append(lattice.errors_heat_cap(E_single_temp))
-            suseptibility.append(lattice.suseptibility(M_single_temp))
-            sus_error.append(lattice.errors_sus(M_single_temp))
+                print(lattice.average(E_single_temp))
+                energy.append(lattice.average(E_single_temp))
+                magnetisation.append(lattice.average(M_single_temp))
+                heat_c.append(lattice.heat_cap(E_single_temp))
+                heat_c_error.append(lattice.errors_heat_cap(E_single_temp))
+                susceptibility.append(lattice.susceptibility(M_single_temp))
+                sus_error.append(lattice.errors_sus(M_single_temp))
 
-            file_handle.write('%lf, %lf, %lf, %lf, %lf, %lf, %lf\n' % (temp_range[t], energy[t], heat_c[t], heat_c_error[t], magnetisation[t], suseptibility[t], sus_error[t]))
+                file_handle.write('%lf, %lf, %lf, %lf, %lf, %lf, %lf\n' % (temp_range[t], energy[t], heat_c[t], heat_c_error[t], magnetisation[t], susceptibility[t], sus_error[t]))
                 
 
             if lattice.dynamics == "Kawasaki":  
                 for i in range(sweeps):                  
-                    for j in range(size**2):
+                    for j in range(size[0]*size[1]):
                         lattice.Kawasaki()
-                        if i % collect == 0 and i >= equil_s:
-                            E_single_temp.append(lattice.energy_total)
-                            M_single_temp.append(lattice.magnetisation)
+                        print(i)
 
-            energy.append(lattice.average(E_single_temp))
-            heat_c.append(lattice.heat_cap(E_single_temp))
-            heat_c_error.append(lattice.errors_heat_cap(E_single_temp))
+                    if i % collect == 0 and i >= equil_s:
+                        print(lattice.energy_total())
+                        E_single_temp.append(lattice.energy_total())
+                        M_single_temp.append(lattice.magnetisation())
+
+                energy.append(lattice.average(E_single_temp))
+                heat_c.append(lattice.heat_cap(E_single_temp))
+                heat_c_error.append(lattice.errors_heat_cap(E_single_temp))
             
-            file_handle.write('%lf, %lf, %lf, %lf\n' % (temp_range[t], energy[t], heat_c[t], heat_c_error[t]))
+                file_handle.write('%lf, %lf, %lf, %lf\n' % (temp_range[t], energy[t], heat_c[t], heat_c_error[t]))
         
         file_handle.close()
         input_file.close()
