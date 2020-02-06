@@ -90,7 +90,7 @@ class Ising_Lattice(object):
         Calculation of the magnetisation of the lattice.
         The sum of the spin at each lattice point.
         """
-        magnetisation = np.sum(self.lattice)
+        magnetisation = abs(np.sum(self.lattice))
         return(magnetisation)
 
     def Glauber(self):
@@ -152,7 +152,7 @@ class Ising_Lattice(object):
         for i in range(100):
             data_point = []
             for j in range(len(mag)):
-                data_point.append(mag[np.random.choice(len(energy))])
+                data_point.append(mag[np.random.choice(len(mag))])
             errors.append(self.susceptibility(data_point))
             return (math.sqrt(self.squared_average(errors)-self.average(errors)**2))
 
