@@ -139,7 +139,7 @@ class Ising_Lattice(object):
         for i in range(100):
             data_point = []
             for j in range(len(energy)):
-                data_point.append(energy[np.random.choice(energy)])
+                data_point.append(energy[np.random.choice(len(energy))])
             errors.append(self.heat_cap(data_point))
             return (math.sqrt(self.squared_average(errors)-self.average(errors)**2))
 

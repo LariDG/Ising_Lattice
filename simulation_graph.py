@@ -62,17 +62,20 @@ def main():
             lattice = Ising_Lattice(temp = temp_range[t], size = size, dynamics = dynamics, spin = spin)
             E_single_temp = []
             M_single_temp = []   
-            print(temp_range[t])         
+            print(temp_range[t])
+                    
 
             if lattice.dynamics == "Glauber":
-                for i in range(sweeps):                                    
+                for i in range(sweeps):
+                    print(i)                                    
                     for j in range(size[0]*size[1]):
                         lattice.Glauber()
-                    if i % collect == 0 and i >= equil_s:                           
+                    if i % collect == 0 and i >= equil_s: 
+                        print(lattice.energy_total())                          
                         E_single_temp.append(lattice.energy_total())
                         M_single_temp.append(lattice.magnetisation())
 
-                print(lattice.average(E_single_temp))
+                
                 energy.append(lattice.average(E_single_temp))
                 magnetisation.append(lattice.average(M_single_temp))
                 heat_c.append(lattice.heat_cap(E_single_temp))
@@ -87,10 +90,10 @@ def main():
                 for i in range(sweeps):                  
                     for j in range(size[0]*size[1]):
                         lattice.Kawasaki()
-                        print(i)
+                        
 
                     if i % collect == 0 and i >= equil_s:
-                        print(lattice.energy_total())
+                        
                         E_single_temp.append(lattice.energy_total())
                         M_single_temp.append(lattice.magnetisation())
 
