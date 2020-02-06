@@ -83,7 +83,7 @@ class Ising_Lattice(object):
         for n in range(self.size[0]):
             for m in range (self.size[1]):
                 energy_total += -self.lattice[n,m] * (self.lattice[self.pbc((n,m-1))] + self.lattice[self.pbc((n,m+1))] + self.lattice[self.pbc((n-1,m))] + self.lattice[self.pbc((n+1,m))])
-        return(energy_total)
+        return(energy_total/2)
 
     def magnetisation(self):
         """
@@ -131,7 +131,7 @@ class Ising_Lattice(object):
                 self.lattice[indices_b] *= -1
 
     def heat_cap(self, energy_list):
-        heat_cap = (1/((self.size[0]*self.size[1])*(self.temp**2))*((self.squared_average(energy_list)-(self.average(energy_list)**2))))
+        heat_cap = (1/((self.size[0]*self.size[1])*(self.temp**2))*(np.var(energy_list)))
         return(heat_cap)
 
     def errors_heat_cap(self, energy):
@@ -141,10 +141,10 @@ class Ising_Lattice(object):
             for j in range(len(energy)):
                 data_point.append(energy[np.random.choice(len(energy))])
             errors.append(self.heat_cap(data_point))
-            return (math.sqrt(self.squared_average(errors)-self.average(errors)**2))
+        return math.sqrt(np.var(errors))
 
     def susceptibility(self, mag_list):        
-        susceptibility = (1/((self.size[0]*self.size[1])*self.temp)*((self.squared_average(mag_list)-(self.average(mag_list)**2))))
+        susceptibility = (1/((self.size[0]*self.size[1])*self.temp)*(np.var(mag_list)))
         return(susceptibility)
 
     def errors_sus(self, mag):
@@ -154,7 +154,7 @@ class Ising_Lattice(object):
             for j in range(len(mag)):
                 data_point.append(mag[np.random.choice(len(mag))])
             errors.append(self.susceptibility(data_point))
-            return (math.sqrt(self.squared_average(errors)-self.average(errors)**2))
+        return math.sqrt(np.var(errors))
 
     def run(self, iterations, it_per_frame):
         """
