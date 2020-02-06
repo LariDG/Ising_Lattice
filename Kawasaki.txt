@@ -1,4 +1,4 @@
-1.0 3.0 50 Kawasaki up
+1.0 3.0 50 Kawasaki half
 
 # text file containing: 
 # min temp = 0.1
