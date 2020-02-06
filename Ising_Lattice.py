@@ -42,8 +42,10 @@ class Ising_Lattice(object):
         if self.spin == "up":
             self.lattice = np.ones(self.size, dtype=int)
 
-        if self.spin == "down":
-            self.lattice = -np.ones(self.size, dtype=int)
+        if self.spin == "half":
+            up = np.ones((self.size,self.size/2), dtype=int)
+            down = -np.ones((self.size,self.size/2), dtype=int)
+            self.lattice = np.append(up, down, axis=0)
 
     def pbc(self, indices):
         """
@@ -127,7 +129,7 @@ class Ising_Lattice(object):
                 self.lattice[indices_b] *= -1
 
     def heat_cap(self, energy_list):
-        heat_cap = (1/((self.size**2)*(self.temp**2))*((self.squared_average(energy_list)-(self.average(energy_list)**2))))
+        heat_cap = (1/((self.size[0]*self.size[1])*(self.temp**2))*((self.squared_average(energy_list)-(self.average(energy_list)**2))))
         return(heat_cap)
 
     def errors_heat_cap(self, energy):
@@ -140,7 +142,7 @@ class Ising_Lattice(object):
             return (sqrt(squared_average(errors)-average(errors)**2))
 
     def susceptibility(self, mag_list):        
-        susceptibility = (1/((self.size**2)*self.temp)*((self.squared_average(mag_list)-(self.average(mag_list)**2))))
+        susceptibility = (1/((self.size[0]*self.size[1])*self.temp)*((self.squared_average(mag_list)-(self.average(mag_list)**2))))
         return(susceptibility)
 
     def errors_sus(self, mag):

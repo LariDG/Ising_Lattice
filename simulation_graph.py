@@ -56,6 +56,11 @@ def main():
         print(min_temp)
         print(max_temp)
         print(dynamics)
+
+        if dynamics == "Glauber":
+            file_handle = open("Glauber.dat", "w+")
+        elif dynamics == "Kawasaki":
+            file_handle = open("Kawasaki.dat", "w+")
         
         for t in range(len(temp_range)):
            
@@ -78,7 +83,6 @@ def main():
             suseptibility.append(lattice.suseptibility(M_single_temp))
             sus_error.append(lattice.errors_sus(M_single_temp))
 
-            file_handle = open("Glauber.dat", "w+")
             file_handle.write('%lf, %lf, %lf, %lf, %lf, %lf, %lf\n' % (temp_range[t], energy[t], heat_c[t], heat_c_error[t], magnetisation[t], suseptibility[t], sus_error[t]))
                 
 
@@ -94,7 +98,6 @@ def main():
             heat_c.append(lattice.heat_cap(E_single_temp))
             heat_c_error.append(lattice.errors_heat_cap(E_single_temp))
             
-            file_handle = open("Kawasaki.dat", "w")
             file_handle.write('%lf, %lf, %lf, %lf\n' % (temp_range[t], energy[t], heat_c[t], heat_c_error[t]))
         
         file_handle.close()
