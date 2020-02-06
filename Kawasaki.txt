@@ -1,0 +1,7 @@
+0.1 3.0 Kawasaki up
+
+# text file containing: 
+# min temp = 0.1
+# max temp = 3.0
+# dynamics = Kawasaki
+# all lattice points up
